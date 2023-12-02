@@ -1,0 +1,19 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ['main','develop']
+  pull_request:
+    branches: ['main','develop']
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+      - name: Install dependencies
+        run: npm install
+      - name: run build
+        run: npm run build
+      - name: Run tests
+        run: npm run test
+  
