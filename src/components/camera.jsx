@@ -24,7 +24,7 @@ function CamStream() {
     <div className="flex items-center  mt-5">
       {videostream ? (
         <video
-          className="w-[100%] rounded-2xl "
+          className="w-[100%] rounded-2xl mx-2"
           autoPlay
           playsInline
           muted

@@ -3,7 +3,16 @@ import Navbar from "../components/Navbar";
 import CamStream from "../components/camera";
 
 function Landing() {
-  const [interests, setinterests] = useState(["random"]);
+  const [interests, setinterests] = useState([{ int: "random", bg: "red" }]);
+
+  const setInterset = (e) => {
+    const set = Math.floor(Math.random() * 16777215).toString(16);
+    const bg = "#" + "0".repeat(6 - set.length) + set;
+    const tag = e.target.value;
+    setinterests((prev) => [...prev, { int: tag, bg: bg }]);
+    e.target.value = "";
+  };
+  console.log(interests);
   return (
     <div>
       <Navbar />
@@ -23,26 +32,27 @@ function Landing() {
             type="text"
             placeholder="interests"
             onBlur={(e) => {
-              setinterests((prev) => [...prev, e.target.value]);
+              if (e.target.value.length > 2) {
+                setInterset(e);
+              }
             }}
             onKeyDown={(e) => {
               if (e.keyCode == 13) {
                 console.log(e.target);
-                e.preventDefault();
-                setinterests((prev) => [...prev, e.target.value]);
-                e.target.value = "";
+                setInterset(e);
               }
             }}
             className="mt-1 w-[20%] border-b-2 border-black py-3 bg-inherit placeholder:text-[#854a4a] focus:outline-none"
           />
           <div className="flex">
-            {interests.map((item) => {
-              const set = Math.floor(Math.random() * 16777215).toString(16);
-              const bg = "#" + "0".repeat(6 - set.length) + set;
-              console.log(bg);
+            {interests.map(({ int, bg }) => {
               return (
-                <p className={` px-4 bg-[${bg}] w-fit  mt-2 py-1 ext-black`}>
-                  {item}
+                <p
+                  key={bg}
+                  style={{ background: bg }}
+                  className={` px-4 w-fit  mt-2 py-1 ext-black mx-1`}
+                >
+                  {int}
                 </p>
               );
             })}
