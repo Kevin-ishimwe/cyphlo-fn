@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between border-b-[2px] grad_border">
       <Logo />
-      <div className="flex">
+      <div className="flex ">
         <Buttongrad
           text="random chat"
           icon={<RiWechat2Fill className="text-3xl mr-2" />}

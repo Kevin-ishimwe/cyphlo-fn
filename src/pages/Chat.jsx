@@ -31,12 +31,12 @@ function Chat({ socket }) {
   }, []);
   return (
     <div>
-      <div className="bg-white h-[4em] flex items-center px-5 justify-between">
-        <div className="flex items-center">
+      <div className="fixed  top-0 bg-white h-[4em] flex items-center md:px-5 py-2 justify-between w-full">
+        <div className="flex items-center flex-wrap md:flex-nowrap py-2">
           <img
             src="https://cdn.britannica.com/79/4479-050-6EF87027/flag-Stars-and-Stripes-May-1-1795.jpg"
             alt=""
-            className="h-5 mx-1"
+            className="h-5 md:mx-1"
           />
           <h1 className="font-['Oswald']">user@1291</h1>
           <NavLink to={"/"} className={"ml-2 font-bold"}>
@@ -49,27 +49,30 @@ function Chat({ socket }) {
             icon={<FaVideo className="text-3xl mr-2" />}
             bg="black"
           />
-          <button className="flex items-center font-bold rounded-full px-6 py-2 bg-red-500 text-white hover:scale-105 transition-all ">
+          <button className="flex items-center font-bold rounded-full px-4 py-2 bg-red-500 text-white hover:scale-105 transition-all ">
             <IoRefresh className="text-xl font-bold" />
             new user
           </button>
         </div>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-5 pt-[7vh]">
         {users.map((item) => {
           return (
             <div
               style={{ justifyContent: item.user == my_id ? "end" : "start" }}
-              className={`w-full  flex `}
+              className={`w-full flex  my-2 relative`}
             >
+              <p className=" absolute text-[10px] text-black top-[-1vh]">
+                {item.messages.dateStamp}
+              </p>
               <p
                 style={{
                   background: item.user == my_id ? "#6262f2" : "#65db65",
                 }}
-                className={`max-w-[60%] min-w-[20vw] px-2 mt-2 py-2 mx-1 rounded-sm font-['Oswald'] font-light text-white text-lg`}
+                className={`  max-w-[60%] relative min-w-[20vw] px-2 mt-2 py-2 mx-1 rounded-sm font-['Oswald'] font-light text-white text-lg`}
               >
-                {item.messages}
+                {item.messages.message}
               </p>
             </div>
           );
@@ -88,7 +91,7 @@ function Chat({ socket }) {
         )}
       </div>
 
-      <div className="fixed bottom-1.5 w-full right-0 pl-[10%]">
+      <div className="fixed bottom-1.5 w-full right-0 pl-0 md:pl-[10%]">
         <div className="flex absolute right-2 mt-1 bottom-2">
           <MdOutlineAttachment className="text-3xl mx-3" />
           <IoMdSend
@@ -96,7 +99,10 @@ function Chat({ socket }) {
             onClick={() => {
               socket.emit("chat", {
                 user: socket.id,
-                messages: message,
+                messages: {
+                  dateStamp: Date().split(" ").slice(0, 5).join(" "),
+                  message: message,
+                },
               });
             }}
           />
@@ -109,7 +115,10 @@ function Chat({ socket }) {
             if (e.keyCode == 13) {
               socket.emit("chat", {
                 user: socket.id,
-                messages: e.target.value,
+                messages: {
+                  dateStamp: Date().split(" ").slice(0, 5).join(" "),
+                  message: e.target.value,
+                },
               });
               e.target.value = "";
               socket.emit("typing", { id: socket.id, state: "off" });
