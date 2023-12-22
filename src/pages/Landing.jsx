@@ -41,6 +41,7 @@ function Landing() {
   }, [interests]);
 
   const styleNickname = (e) => {
+    e.target.classList.remove("bg-inherit");
     e.target.classList.add("bg-[black]");
     e.target.classList.add("text-white");
     e.target.classList.add("font-bold");
@@ -49,9 +50,9 @@ function Landing() {
   return (
     <div>
       <Navbar />
-      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap h-[100%]  items-center">
+      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap h-[100%]  items-center mx-2">
         <div className="md:w-[60%] mx-2 ">
-          <h1 className=" text-4xl pt-0 md:text-[2.7em]  md:pt-[15vh] font-extrabold font-['Oswald']">
+          <h1 className=" text-4xl pt-0 md:text-[2.7em]  md:pt-[15vh] font-extrabold font-['Oswald'] leading-[1.25em]">
             Chat with random strangers, make friends, embrace the excitement of
             connecting with diverse individuals.
           </h1>
