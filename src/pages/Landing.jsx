@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import CamStream from "../components/camera";
+import MirrorStream from "../components/camera";
 import { RxCross2 } from "react-icons/rx";
 
 function Landing() {
@@ -118,7 +118,7 @@ function Landing() {
             })}
           </div>
         </div>
-        <CamStream />
+        <MirrorStream />
       </div>
     </div>
   );

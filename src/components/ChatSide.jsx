@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import { MdOutlineAttachment } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
-import Buttongrad from "./buttongrad";
-import { FaVideo } from "react-icons/fa6";
 import { IoRefresh } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 function ChatSide({ socket }) {
-  console.log(socket);
   const [message, setmessage] = useState("");
   const [users, setusers] = useState([]);
   const [my_id, setmy_id] = useState(null);
@@ -14,7 +11,7 @@ function ChatSide({ socket }) {
   const getMessages = (socket) => {
     socket.on("chat", (data) => {
       setmy_id(socket.id);
-      console.log("connected to live chat", data);
+      // console.log("connected to live chat", data);
       setusers((prev) => [...prev, data]);
     });
   };
@@ -22,8 +19,6 @@ function ChatSide({ socket }) {
     try {
       getMessages(socket);
       socket.on("typing", (typing) => {
-        console.log("TYPE SOCKET LISTENER");
-        console.log(typing, socket.id);
         settyping(typing);
       });
     } catch (e) {

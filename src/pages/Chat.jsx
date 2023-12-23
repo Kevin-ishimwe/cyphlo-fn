@@ -6,18 +6,15 @@ import { FaVideo } from "react-icons/fa6";
 import { IoRefresh } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 import Spinners from "../components/loaders/Spinners";
+import { useLocation } from "react-router-dom";
 function Chat({ socket }) {
   const [users, setusers] = useState([]);
   const [nickname, setnickname] = useState("randomnoob1");
   const [nickname2, setnickname2] = useState(false);
   const [my_id, setmy_id] = useState(null);
   const [typing, settyping] = useState(false);
+  const location = useLocation();
 
-  const getMessages = (socket) => {
-    socket.on("chat", (data) => {
-      setusers((prev) => [...prev, data]);
-    });
-  };
   useEffect(() => {
     try {
       setTimeout(() => {
@@ -26,7 +23,7 @@ function Chat({ socket }) {
         if (localStorage.getItem("socket_id") != undefined) {
           const nick_init = JSON.parse(localStorage.getItem("nickname"));
           console.error(nick_init);
-          socket.emit("userconnected", {
+          socket.emit("chat:userconnected", {
             name: nick_init ? nick_init : nickname,
             id: localStorage.getItem("socket_id"),
             recourse: false,
@@ -34,7 +31,7 @@ function Chat({ socket }) {
         }
       }, [1000]);
       getMessages(socket);
-      socket.on("typing", (typing) => {
+      socket.on("chat:typing", (typing) => {
         console.log("TYPE SOCKET LISTENER");
         settyping(typing);
       });
@@ -48,29 +45,35 @@ function Chat({ socket }) {
     return clearTimeout();
   }, []);
 
+  useEffect(() => {
+    socket.on("chat:userconnected", (data) => {
+      localStorage.setItem("room_id", data.room);
+      if (data.id && data.id !== localStorage.getItem("socket_id")) {
+        setnickname2(data.name);
+        localStorage.setItem("friend_name", data.name);
+      }
+    });
+    if (location.pathname !== "/chat") {
+      socket.disconnect();
+    }
+  }, [location]);
   const userPropagation = () => {
     if (localStorage.getItem("socket_id") != undefined) {
       const nick_init = JSON.parse(localStorage.getItem("nickname"));
-      socket.emit("userconnected", {
+      socket.emit("chat:userconnected", {
         name: nick_init ? nick_init : nickname,
         recourse: true,
         id: localStorage.getItem("socket_id"),
         room: localStorage.getItem("room_id"),
       });
     }
-
-    useEffect(() => {
-      socket.on("userconnected", (data) => {
-        localStorage.setItem("room_id", data.room);
-        if (data.id && data.id !== localStorage.getItem("socket_id")) {
-          setnickname2(data.name);
-          localStorage.setItem("friend_name", data.name);
-        }
-      });
-    }, []);
   };
-
-  socket.on("leave", (data) => {
+  const getMessages = (socket) => {
+    socket.on("chat:chat", (data) => {
+      setusers((prev) => [...prev, data]);
+    });
+  };
+  socket.on("chat:leave", (data) => {
     setnickname2(true);
     socket.disconnect();
   });
@@ -87,7 +90,13 @@ function Chat({ socket }) {
               className="h-5 md:mx-1"
             />
             <h1 className="font-['Oswald']">@{nickname}</h1>
-            <NavLink to={"/"} className={"ml-2 font-bold"}>
+            <NavLink
+              to={"/"}
+              className={"ml-2 font-bold"}
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
               home
             </NavLink>
           </div>
@@ -160,7 +169,7 @@ function Chat({ socket }) {
             <button
               className="bg-black w-[10em] py-3 text-white transition-all hover:scale-105 my-2 rounded-md"
               onClick={() => {
-                location.reload();
+                window.location.reload();
               }}
             >
               new friend
@@ -189,7 +198,7 @@ function Chat({ socket }) {
           <IoMdSend
             className="text-3xl"
             onClick={() => {
-              socket.emit("chat", {
+              socket.emit("chat:chat", {
                 user: socket.id,
                 messages: {
                   dateStamp: Date().split(" ").slice(0, 5).join(" "),
@@ -207,7 +216,7 @@ function Chat({ socket }) {
           placeholder="Enter message"
           onKeyDown={(e) => {
             if (e.keyCode == 13) {
-              socket.emit("chat", {
+              socket.emit("chat:chat", {
                 user: socket.id,
                 messages: {
                   dateStamp: Date().split(" ").slice(0, 5).join(" "),
@@ -216,7 +225,7 @@ function Chat({ socket }) {
                 room: localStorage.getItem("room_id"),
               });
               e.target.value = "";
-              socket.emit("typing", {
+              socket.emit("chat:typing", {
                 id: socket.id,
                 state: "off",
                 room: localStorage.getItem("room_id"),
@@ -224,15 +233,14 @@ function Chat({ socket }) {
             }
           }}
           onFocus={async (e) => {
-            console.log("FOCUS");
-            socket.emit("typing", {
+            socket.emit("chat:typing", {
               id: socket.id,
               state: "on",
               room: localStorage.getItem("room_id"),
             });
           }}
           onBlur={() => {
-            socket.emit("typing", {
+            socket.emit("chat:typing", {
               id: socket.id,
               state: "off",
               room: localStorage.getItem("room_id"),

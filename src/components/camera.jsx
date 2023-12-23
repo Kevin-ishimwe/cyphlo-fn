@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import rand_chat from "../assets/rx_chat.png";
 import Logo from "./logo";
-function CamStream() {
+function MirrorStream() {
   const [videostream, setvideostream] = useState(null);
   const initCamera = async () => {
     try {
@@ -43,4 +43,4 @@ function CamStream() {
   );
 }
 
-export default CamStream;
+export default MirrorStream;
