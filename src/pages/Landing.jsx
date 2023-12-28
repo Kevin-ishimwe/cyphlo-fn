@@ -50,7 +50,7 @@ function Landing() {
   return (
     <div>
       <Navbar />
-      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap h-[100%]  items-center mx-2">
+      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap  items-center md:mx-2 ">
         <div className="md:w-[60%] mx-2 ">
           <h1 className=" text-4xl pt-0 md:text-[2.7em]  md:pt-[15vh] font-extrabold font-['Oswald'] leading-[1.25em]">
             Chat with random strangers, make friends, embrace the excitement of

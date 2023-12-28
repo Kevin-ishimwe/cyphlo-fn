@@ -8,26 +8,33 @@ function ChatSide({ socket }) {
   const [users, setusers] = useState([]);
   const [my_id, setmy_id] = useState(null);
   const [typing, settyping] = useState(false);
+  const [height, setheight] = useState(true);
+
   const getMessages = (socket) => {
-    socket.on("chat", (data) => {
-      setmy_id(socket.id);
-      // console.log("connected to live chat", data);
+    socket.on("video:chat", (data) => {
       setusers((prev) => [...prev, data]);
     });
   };
   useEffect(() => {
     try {
       getMessages(socket);
-      socket.on("typing", (typing) => {
+      socket.on("video:typing", (typing) => {
         settyping(typing);
       });
     } catch (e) {
       console.log(e.message);
     }
+    setmy_id(socket.id);
   }, []);
+  window.onresize = () => {
+    console.log(
+      "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    );
+    setheight(visualViewport.height);
+  };
   return (
-    <div className="w-full">
-      <div className="bg-white w-full h-[4em] flex items-center px-5 justify-between">
+    <div className="w-full bg-[#f6f6f6] h-[100%]">
+      <div className="bg-white w-full h-[4em] flex items-center md:px-5 justify-between shadow-[2px_2px_400px_#a8a8a8] fixed top-0">
         <div className="flex items-center">
           <img
             src="https://cdn.britannica.com/79/4479-050-6EF87027/flag-Stars-and-Stripes-May-1-1795.jpg"
@@ -35,8 +42,8 @@ function ChatSide({ socket }) {
             className="h-5 mx-1"
           />
           <h1 className="font-['Oswald']">user@1291</h1>
-          <NavLink to={"/"} className={"ml-2 font-bold"}>
-            \ home
+          <NavLink to={"/"} className={"md:ml-2 font-bold"}>
+            \home
           </NavLink>
         </div>
         <div className=" flex">
@@ -45,8 +52,8 @@ function ChatSide({ socket }) {
             icon={<FaVideo className="text-3xl mr-2" />}
             bg="black"
           /> */}
-          <button className="flex items-center font-bold rounded-full px-6 py-2 bg-red-500 text-white hover:scale-105 transition-all ">
-            <IoRefresh className="text-xl font-bold" />
+          <button className="flex items-center font-bold rounded-full relative pl-10 px-6 py-2 bg-red-500 text-white hover:scale-105 transition-all ">
+            <IoRefresh className="text-xl font-bold absolute left-4" />
             new user
           </button>
         </div>
@@ -84,8 +91,10 @@ function ChatSide({ socket }) {
         )}
       </div>
 
-      <div className="fixed w-[70%]  bottom-1.5 right-0 pl-[2%]">
-        <div className="flex absolute  right-2 mt-1 bottom-2">
+      <div
+        className="fixed w-[80%] md:w-[55%] lg:w-[70%] bottom-1 right-0 pl-[2%]"
+      >
+        <div className="flex absolute  right-2 mt-1 ">
           <MdOutlineAttachment className="text-3xl mx-3" />
           <IoMdSend
             className="text-3xl"
@@ -103,20 +112,35 @@ function ChatSide({ socket }) {
           placeholder="Enter message"
           onKeyDown={(e) => {
             if (e.keyCode == 13) {
-              socket.emit("chat", {
+              const message = e.target.value;
+              setusers((prev) => [...prev, { user: my_id, messages: message }]);
+              socket.emit("video:chat", {
                 user: socket.id,
-                messages: e.target.value,
+                messages: message,
+                room: localStorage.getItem("video_room_id"),
+              });
+              socket.emit("video:typing", {
+                id: socket.id,
+                state: "off",
+                room: localStorage.getItem("video_room_id"),
               });
               e.target.value = "";
-              socket.emit("typing", { id: socket.id, state: "off" });
             }
           }}
           onFocus={async (e) => {
             console.log("FOCUS");
-            socket.emit("typing", { id: socket.id, state: "on" });
+            socket.emit("video:typing", {
+              id: socket.id,
+              state: "on",
+              room: localStorage.getItem("video_room_id"),
+            });
           }}
           onBlur={() => {
-            socket.emit("typing", { id: socket.id, state: "off" });
+            socket.emit("video:typing", {
+              id: socket.id,
+              state: "off",
+              room: localStorage.getItem("video_room_id"),
+            });
           }}
         />
       </div>

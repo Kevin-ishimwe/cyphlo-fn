@@ -136,7 +136,7 @@ function Chat({ socket }) {
         </div>
       </div>
 
-      <div className="mt-12 pt-[7vh]">
+      <div className="mt-12 py-[7vh]">
         {users.map((item) => {
           return (
             <div

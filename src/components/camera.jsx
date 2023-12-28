@@ -22,17 +22,17 @@ function MirrorStream() {
   }, []);
 
   return (
-    <div className="flex items-center  mt-5 mr-1">
+    <div className="flex items-center  mt-5 mx-2 md:mr-1 ">
       {videostream ? (
         <div className="relative">
           <video
-            className="w-[100%] rounded-2xl mx-2"
+            className="w-[100%] rounded-2xl  object-cover max-h-[50vh] md:max-h-full"
             autoPlay
             playsInline
             muted
             ref={(video) => video && (video.srcObject = videostream)}
           />
-          <div className="absolute right-0 bottom-[.2em] scale-[.9]">
+          <div className="absolute right-2 bottom-0">
             <Logo />
           </div>
         </div>
