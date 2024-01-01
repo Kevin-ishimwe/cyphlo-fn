@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MdOutlineAttachment } from "react-icons/md";
 import { IoMdSend } from "react-icons/io";
 import Buttongrad from "../components/buttongrad";
@@ -9,11 +9,13 @@ import Spinners from "../components/loaders/Spinners";
 import { useLocation } from "react-router-dom";
 function Chat({ socket }) {
   const [users, setusers] = useState([]);
+  const [message, setmessage] = useState(null);
   const [nickname, setnickname] = useState("randomnoob1");
   const [nickname2, setnickname2] = useState(false);
   const [my_id, setmy_id] = useState(null);
   const [typing, settyping] = useState(false);
   const location = useLocation();
+  const messageInputRef = useRef();
 
   useEffect(() => {
     try {
@@ -80,8 +82,8 @@ function Chat({ socket }) {
   userPropagation();
 
   return (
-    <div>
-      <div className="fixed  top-0 bg-white w-full z-10">
+    <div className="">
+      <div className="fixed  top-[0vh] bg-white w-full z-10">
         <div className="h-[4em] flex items-center md:px-5 py-2 justify-between w-full">
           <div className="flex items-center flex-wrap md:flex-nowrap py-2">
             <img
@@ -90,15 +92,15 @@ function Chat({ socket }) {
               className="h-5 md:mx-1"
             />
             <h1 className="font-['Oswald']">@{nickname}</h1>
-            <NavLink
-              to={"/"}
+            <a
+              href="/"
               className={"ml-2 font-bold"}
               onClick={() => {
-                window.location.reload();
+                socket.disconnect();
               }}
             >
               home
-            </NavLink>
+            </a>
           </div>
           <div className=" flex">
             <Buttongrad
@@ -135,64 +137,64 @@ function Chat({ socket }) {
           )}
         </div>
       </div>
-
-      <div className="mt-12 py-[7vh]">
-        {users.map((item) => {
-          return (
-            <div
-              style={{ justifyContent: item.user == my_id ? "end" : "start" }}
-              className={`w-full flex  my-2 relative`}
-            >
-              <p className=" absolute text-[10px] text-black top-[-1vh]">
-                {item.messages.dateStamp}
-              </p>
-              <p
-                style={{
-                  background: item.user == my_id ? "#6262f2" : "#65db65",
-                }}
-                className={`  max-w-[60%] relative min-w-[20vw] px-2 mt-2 py-2 mx-1 rounded-sm font-['Oswald'] font-light text-white text-lg`}
+      <div>
+        <div className="mt-12 py-[7vh] overflow-hidden">
+          {users.map((item) => {
+            return (
+              <div
+                style={{ justifyContent: item.user == my_id ? "end" : "start" }}
+                className={`w-full flex  my-2 relative`}
               >
-                {item.messages.message}
+                <p className=" absolute text-[10px] text-black top-[-1vh]">
+                  {item.messages.dateStamp}
+                </p>
+                <p
+                  style={{
+                    background: item.user == my_id ? "#6262f2" : "#65db65",
+                  }}
+                  className={`  max-w-[60%] relative min-w-[20vw] px-2 mt-2 py-2 mx-1 rounded-sm font-['Oswald'] font-light text-white text-lg`}
+                >
+                  {item.messages.message}
+                </p>
+              </div>
+            );
+          })}
+          {nickname2 == true ? (
+            <div className="bg-red-200 text-center grid justify-center  w-full mb-16 py-4">
+              <p className="flex">
+                <span className="font-bold text-['Oswald'] mr-2">
+                  {localStorage.getItem("friend_name")}
+                </span>
+                {"  "}
+                left the chat
+              </p>
+              <button
+                className="bg-black w-[10em] py-3 text-white transition-all hover:scale-105 my-2 rounded-md"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                new friend
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+
+          {typing.state && typing.data.id != socket.id ? (
+            <div className="mt-5 w-full  py-2 ">
+              <p className="flex items-center  bg-[#65db65] w-fit text-3xl px-2 mt-2 py-4 mx-1 rounded-sm font-['Oswald'] font-light text-white">
+                <span className="typing h-1 w-1 bg-white mx-1 rounded-full"></span>
+                <span className="typing1 h-1 w-1 bg-white mx-1 rounded-full"></span>
+                <span className="typing2 h-1 w-1 bg-white mx-1 rounded-full animate"></span>
               </p>
             </div>
-          );
-        })}
-        {nickname2 == true ? (
-          <div className="bg-red-200 text-center grid justify-center  w-full mb-16 py-4">
-            <p className="flex">
-              <span className="font-bold text-['Oswald'] mr-2">
-                {localStorage.getItem("friend_name")}
-              </span>
-              {"  "}
-              left the chat
-            </p>
-            <button
-              className="bg-black w-[10em] py-3 text-white transition-all hover:scale-105 my-2 rounded-md"
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              new friend
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
-
-        {typing.state && typing.data.id != socket.id ? (
-          <div className="mt-5 w-full  py-2 ">
-            <p className="flex items-center  bg-[#65db65] w-fit text-3xl px-2 mt-2 py-4 mx-1 rounded-sm font-['Oswald'] font-light text-white">
-              <span className="typing h-1 w-1 bg-white mx-1 rounded-full"></span>
-              <span className="typing1 h-1 w-1 bg-white mx-1 rounded-full"></span>
-              <span className="typing2 h-1 w-1 bg-white mx-1 rounded-full animate"></span>
-            </p>
-          </div>
-        ) : (
-          <div></div>
-        )}
+          ) : (
+            <div></div>
+          )}
+        </div>
       </div>
-
-      <div className="fixed bottom-1.5 w-full right-0 pl-0 md:pl-[10%]">
+      <div className="fixed bottom-1.5 w-full right-0 pl-0 md:pl-[10%] z-30">
         <div className="flex absolute right-2 mt-1 bottom-2">
           <MdOutlineAttachment className="text-3xl mx-3" />
           <IoMdSend
@@ -206,11 +208,16 @@ function Chat({ socket }) {
                 },
                 room: localStorage.getItem("room_id"),
               });
+              messageInputRef.current.value = "";
             }}
           />
         </div>
         <input
           autoFocus
+          ref={messageInputRef}
+          onChange={(e) => {
+            setmessage(e.target.value);
+          }}
           type="text"
           className="w-full py-2  px-3 border-2 rounded-full  border-black focus:outline-none font-['Oswald']"
           placeholder="Enter message"

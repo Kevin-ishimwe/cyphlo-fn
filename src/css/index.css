@@ -3,13 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 * {
-  margin: 0;
-  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   font-family: "Electrolize";
 }
 body {
-  background-color: #f6f6f6;
+  position: relative;
+  min-height: 100%;
+  overflow: hidden !important;
+  top: 0px;
 }
+
+
 .grad1 {
   background: -webkit-linear-gradient(
     rgb(252, 69, 49),
@@ -51,3 +57,4 @@ body {
     scale: 1;
   }
 }
+

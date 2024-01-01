@@ -76,18 +76,28 @@ function VideoComponent({ socket }) {
     }
   };
   useEffect(() => {
-    try {
-      initCamera();
-    } catch (error) {
-      console.log(error);
+    console.info("Using effect ________________");
+    if (remotestream == null) {
+      try {
+        initCamera();
+        socket.on("video:leave", (data) => {
+          console.log(data);
+          socket.disconnect();
+          setremotestream(null);
+          location.reload();
+        });
+      } catch (error) {
+        console.log(error, "Error found");
+      }
     }
-  }, []);
-    window.onresize = () => {
-      console.log(
-        "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-      );
-      setheight(visualViewport.height);
-    };
+  }, [remotestream]);
+
+  window.onresize = () => {
+    console.log(
+      "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    );
+    //setheight(visualViewport.height);
+  };
 
   return (
     <div>

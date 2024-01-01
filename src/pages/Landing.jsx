@@ -15,12 +15,9 @@ function Landing() {
     setinit(false);
   };
   const removeInterest = (id) => {
-    console.log("removeInterst", id);
     let placeholder = interests;
     for (let i = 0; i < interests.length; i++) {
-      console.log(interests[i]);
       if (interests[i].int == id) {
-        console.log(interests[i], "this");
         setinterests((prev) => [
           ...placeholder.slice(0, i),
           ...placeholder.slice(i + 1),
@@ -50,7 +47,7 @@ function Landing() {
   return (
     <div>
       <Navbar />
-      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap  items-center md:mx-2 ">
+      <div className="flex-col-reverse md:flex-row flex flex-wrap md:flex-nowrap  items-center  ">
         <div className="md:w-[60%] mx-2 ">
           <h1 className=" text-4xl pt-0 md:text-[2.7em]  md:pt-[15vh] font-extrabold font-['Oswald'] leading-[1.25em]">
             Chat with random strangers, make friends, embrace the excitement of
@@ -65,7 +62,6 @@ function Landing() {
               localStorage.setItem("nickname", JSON.stringify(e.target.value));
             }}
             onFocus={(e) => {
-              console.log("onFocus", e.target);
               e.target.classList.remove("bg-[black]");
               e.target.classList.remove("text-white");
             }}
@@ -90,7 +86,6 @@ function Landing() {
             }}
             onKeyDown={(e) => {
               if (e.keyCode == 13) {
-                console.log(e.target);
                 setInterset(e);
               }
             }}

@@ -8,7 +8,7 @@ function ChatSide({ socket }) {
   const [users, setusers] = useState([]);
   const [my_id, setmy_id] = useState(null);
   const [typing, settyping] = useState(false);
-  const [height, setheight] = useState(true);
+
 
   const getMessages = (socket) => {
     socket.on("video:chat", (data) => {
@@ -30,7 +30,6 @@ function ChatSide({ socket }) {
     console.log(
       "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
     );
-    setheight(visualViewport.height);
   };
   return (
     <div className="w-full bg-[#f6f6f6] h-[100%]">
@@ -42,9 +41,9 @@ function ChatSide({ socket }) {
             className="h-5 mx-1"
           />
           <h1 className="font-['Oswald']">user@1291</h1>
-          <NavLink to={"/"} className={"md:ml-2 font-bold"}>
+          <a href="/" className={"md:ml-2 font-bold"}>
             \home
-          </NavLink>
+          </a>
         </div>
         <div className=" flex">
           {/* <Buttongrad
@@ -59,7 +58,7 @@ function ChatSide({ socket }) {
         </div>
       </div>
 
-      <div className="mt-5 pb-[4em] py-1">
+      <div className="mt-16 pb-[4em] py-1">
         {users.map((item) => {
           return (
             <div
@@ -91,9 +90,7 @@ function ChatSide({ socket }) {
         )}
       </div>
 
-      <div
-        className="fixed w-[80%] md:w-[55%] lg:w-[70%] bottom-1 right-0 pl-[2%]"
-      >
+      <div className="fixed w-[80%] md:w-[55%] lg:w-[70%] bottom-1 right-0 pl-[2%]">
         <div className="flex absolute  right-2 mt-1 ">
           <MdOutlineAttachment className="text-3xl mx-3" />
           <IoMdSend

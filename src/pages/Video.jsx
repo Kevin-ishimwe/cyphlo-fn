@@ -5,7 +5,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { GiCrossMark } from "react-icons/gi";
 function VideoChat({ socket }) {
   const [side, setside] = useState(true);
-    const [height, setheight] = useState(true);
+  const [height, setheight] = useState(true);
   useEffect(() => {
     if (visualViewport.width <= 768) {
       setside(false);
@@ -22,7 +22,7 @@ function VideoChat({ socket }) {
           clipPath: side
             ? "polygon(0 0, 100% 0%, 100% 100%, 0% 100%)"
             : "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
-            height:`${height}`
+          height: `${height}`,
         }}
         className="fixed md:relative md:flex z-40 right-0 top-0  overflow-y-scroll  w-[80%] bg-black "
       >
