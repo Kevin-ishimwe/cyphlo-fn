@@ -13,8 +13,8 @@ function VideoChat({ socket }) {
   }, []);
 
   return (
-    <div className=" flex">
-      <div className=" md:w-[35em] grid justify-center lg:w-[30em]  border-r-2 min-h-screen pr-4 border-black">
+    <div className=" flex w-full">
+      <div className="  w-full md:w-[35em] grid justify-center lg:w-[30em]  border-r-2 min-h-screen md:pr-4 border-black">
         <VideoComponent socket={socket} />
       </div>
       <div
@@ -24,7 +24,7 @@ function VideoChat({ socket }) {
             : "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
           height: `${height}`,
         }}
-        className="fixed md:relative md:flex z-40 right-0 top-0  overflow-y-scroll  w-[80%] bg-black "
+        className="fixed md:relative md:flex z-40 right-0 top-0  overflow-y-scroll  w-[80%]"
       >
         <ChatSide socket={socket} />
       </div>

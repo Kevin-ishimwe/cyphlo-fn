@@ -9,7 +9,6 @@ function ChatSide({ socket }) {
   const [my_id, setmy_id] = useState(null);
   const [typing, settyping] = useState(false);
 
-
   const getMessages = (socket) => {
     socket.on("video:chat", (data) => {
       setusers((prev) => [...prev, data]);
@@ -32,7 +31,7 @@ function ChatSide({ socket }) {
     );
   };
   return (
-    <div className="w-full bg-[#f6f6f6] h-[100%]">
+    <div className="w-full bg-[#f6f6f6] h-[100%] min-h-screen">
       <div className="bg-white w-full h-[4em] flex items-center md:px-5 justify-between shadow-[2px_2px_400px_#a8a8a8] fixed top-0">
         <div className="flex items-center">
           <img
@@ -90,7 +89,7 @@ function ChatSide({ socket }) {
         )}
       </div>
 
-      <div className="fixed w-[80%] md:w-[55%] lg:w-[70%] bottom-1 right-0 pl-[2%]">
+      <div className="fixed w-[80%] md:w-[55%] lg:w-[65%] bottom-1 right-0 pl-[2%]">
         <div className="flex absolute  right-2 mt-1 ">
           <MdOutlineAttachment className="text-3xl mx-3" />
           <IoMdSend

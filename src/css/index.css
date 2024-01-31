@@ -11,10 +11,7 @@
 body {
   position: relative;
   min-height: 100%;
-  overflow: hidden !important;
-  top: 0px;
 }
-
 
 .grad1 {
   background: -webkit-linear-gradient(
@@ -57,4 +54,3 @@ body {
     scale: 1;
   }
 }
-
