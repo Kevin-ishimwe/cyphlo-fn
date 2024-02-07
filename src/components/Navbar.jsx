@@ -6,16 +6,16 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between border-b-[2px] grad_border">
       <Logo />
-      <div className="flex ">
+      <div className="flex  w-full justify-end">
         <Buttongrad
           text="random chat"
-          icon={<RiWechat2Fill className="text-3xl mr-2" />}
+          icon={<RiWechat2Fill className="md:text-3xl mr-2 absolute  left-2" />}
           bg=""
           link="/chat"
         />
         <Buttongrad
           text=" random video"
-          icon={<FaVideo className="text-3xl mr-2" />}
+          icon={<FaVideo className="md:text-3xl mr-2 absolute left-2" />}
           bg="black"
           link="/videochat"
         />

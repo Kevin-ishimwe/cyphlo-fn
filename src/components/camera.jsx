@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import rand_chat from "../assets/rx_chat.png";
-function CamStream() {
+import Logo from "./logo";
+function MirrorStream() {
   const [videostream, setvideostream] = useState(null);
   const initCamera = async () => {
     try {
@@ -21,15 +22,20 @@ function CamStream() {
   }, []);
 
   return (
-    <div className="flex items-center  mt-5">
+    <div className="flex items-center  mt-5 mx-2 md:mr-1 ">
       {videostream ? (
-        <video
-          className="w-[100%] rounded-2xl mx-2"
-          autoPlay
-          playsInline
-          muted
-          ref={(video) => video && (video.srcObject = videostream)}
-        ></video>
+        <div className="relative">
+          <video
+            className="w-[100%] rounded-2xl  object-cover max-h-[50vh] md:max-h-full"
+            autoPlay
+            playsInline
+            muted
+            ref={(video) => video && (video.srcObject = videostream)}
+          />
+          <div className="absolute right-2 bottom-0">
+            <Logo />
+          </div>
+        </div>
       ) : (
         <img src={rand_chat}></img>
       )}
@@ -37,4 +43,4 @@ function CamStream() {
   );
 }
 
-export default CamStream;
+export default MirrorStream;
