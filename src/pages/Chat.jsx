@@ -34,7 +34,7 @@ function Chat({ socket }) {
       }, [1000]);
       getMessages(socket);
       socket.on("chat:typing", (typing) => {
-        console.log("TYPE SOCKET LISTENER");
+        console.log("TYPE SOCKET LISTENER",typing);
         settyping(typing);
       });
       const nick_init = JSON.parse(localStorage.getItem("nickname"));
@@ -160,8 +160,8 @@ function Chat({ socket }) {
             );
           })}
           {nickname2 == true ? (
-            <div className="bg-red-200 text-center grid justify-center  w-full mb-16 py-4">
-              <p className="flex">
+            <div className="backdrop-blur-sm text-center grid justify-center  w-full mb-16 py-4 fixed bottom-[10em]  h-[20em] bg-[rgba(51,51,51,0.11)]">
+              <p className="flex text-xl">
                 <span className="font-bold text-['Oswald'] mr-2">
                   {localStorage.getItem("friend_name")}
                 </span>
@@ -169,7 +169,7 @@ function Chat({ socket }) {
                 left the chat
               </p>
               <button
-                className="bg-black w-[10em] py-3 text-white transition-all hover:scale-105 my-2 rounded-md"
+                className="bg-black w-[10em] py-3 text-white transition-all hover:scale-105 my-2 rounded-md h-fit hover:bg-primaryRed"
                 onClick={() => {
                   window.location.reload();
                 }}
@@ -237,6 +237,10 @@ function Chat({ socket }) {
                 state: "off",
                 room: localStorage.getItem("room_id"),
               });
+              console.log(e.target)
+              e.target.blur()
+              
+            
             }
           }}
           onFocus={async (e) => {
